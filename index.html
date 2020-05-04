@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Detect user agent, browser, os, screen resolution and other debug info</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background: #d4fddf;
+  font-family: Arial;
+  margin: 30px;
+}
+
+#debug-container {
+  max-width: 400px;
+  border: 3px solid orange;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.debug-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  font-size: 20px;
+}
+
+.refresh-button {
+  padding: 10px;
+  background: orange;
+  border: 1px solid black;
+  font-family: inherit;
+  font-size: 18px;
+}
+</style>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body translate="no">
+<h1>User agent: browser, os, screen resolution</h1>
+<!-- <p><i>An easy method using UA-Parser (https://github.com/faisalman/ua-parser-js) and vanilla JavaScript variables to detect user info for debugging, such as browser version, os, screen resolution, device type etc.</i> from https://codepen.io/martinkrulltott/details/KmJmVm</p> -->
+<div id="debug-container"></div>
+<button class="refresh-button" onclick="getDebugInfo()">Refresh </button>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.12/ua-parser.min.js'></script>
+<script id="rendered-js">
+function getDebugInfo() {
+  var infoSections = [];
+  var parser = new UAParser();
+  var userOs = parser.getOS();
+  var userDevice = parser.getDevice();
+  var userBrowser = parser.getBrowser();
+  var debugContainer = document.getElementById("debug-container");
+
+  if (userOs && userOs.name && userOs.version) {
+    infoSections.push({ name: 'OS', value: userOs.name + ' ' + userOs.version});
+  }
+
+  if (userBrowser && userBrowser.name && userBrowser.version) {
+    infoSections.push({ name: 'Browser', value: userBrowser.name + ' ' + userBrowser.version});
+  }
+
+  if (userDevice && userDevice.vendor && userDevice.model) {
+    infoSections.push({ name: 'Device', value: userBrowser.vendor + ' ' + userBrowser.model});
+  } else {
+    infoSections.push({ name: 'Device', value: 'N/A'});
+  }
+
+  if (window) {
+    if (window.screen) {
+      infoSections.push({ name: 'Screen resolution', value: window.screen.width + 'x' + window.screen.height});
+      infoSections.push({ name: 'Available screen space', value: window.screen.availWidth + 'x' + window.screen.availHeight});
+    }
+
+    infoSections.push({ name: 'Browser window size', value: window.innerWidth + 'x' + window.innerHeight});
+    infoSections.push({ name: 'Device pixel ratio', value: window.devicePixelRatio });
+  }
+
+  //Old-school JS without jQuery or another framework, just for fun
+  while (debugContainer.hasChildNodes()) {
+    debugContainer.removeChild(debugContainer.lastChild);
+  }
+
+  for (var i = 0; i < infoSections.length; i++) {
+    var debugInfo = document.createElement("div");
+    debugInfo.setAttribute("class", "debug-info");
+    var debugName = document.createElement("div");
+    debugName.setAttribute("class", "debug-name");
+    debugName.appendChild(document.createTextNode(infoSections[i].name));
+    var debugValue = document.createElement("div");
+    debugValue.setAttribute("class", "debug-value");
+    debugValue.appendChild(document.createTextNode(infoSections[i].value)); 
+    debugInfo.appendChild(debugName);
+    debugInfo.appendChild(debugValue);
+    debugContainer.appendChild(debugInfo);
+  }
+}
+
+window.addEventListener("resize", function () {
+  // This will fire each time the window is resized
+  // Usually a good idea to wrap this in a debounce method, like http://underscorejs.org/#debounce
+  getDebugInfo();
+}, false);
+
+window.addEventListener("orientationchange", function () {
+  getDebugInfo();
+}, false);
+
+getDebugInfo();
+</script>
+</body>
+</html>
