@@ -81,7 +81,8 @@ function getDebugInfo() {
     infoSections.push({ name: 'Device pixel ratio', value: window.devicePixelRatio });
   }
   
-  infoSections.push({ name: 'Zoom level (experimental)', value: browser.tabs.getZoom() });
+  var zoomLevel = browser.tabs.getZoom();
+  infoSections.push({ name: 'Zoom level (experimental)', value: zoomLevel });
 
   //Old-school JS without jQuery or another framework, just for fun
   while (debugContainer.hasChildNodes()) {
