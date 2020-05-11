@@ -430,15 +430,20 @@ function getDebugInfo() {
     infoSections.push({ name: 'Device pixel ratio', value: window.devicePixelRatio });
   }
   
+  // browser zoom levels
 	getZoomValues();
-	infoSections.push({ name: '-------------------------------------------------------------', value: '-----' });
+	infoSections.push({ name: '---------------------------------------', value: '-----' });
 	infoSections.push({ name: 'Zoom: Chrome only (Firefox = doubled; Safari always 1, IE = ?)', value: '' });
 	infoSections.push({ name: 'Zoom level', value: zoomLevel + ' (' + parseFloat(zoomLevel * 100).toFixed(0) + '%)' });
 	infoSections.push({ name: 'Device zoom level', value: deviceZoom });
 
+	// mobile pinch zoom level
+  if (window.visualViewport) {
+		infoSections.push({ name: '---------------------------------------', value: '-----' });
+		infoSections.push({ name: 'mobile zoom level (untested)', value: window.visualViewport.scale });
+	}
 	
-  
-
+	
   //Old-school JS without jQuery or another framework, just for fun
   while (debugContainer.hasChildNodes()) {
     debugContainer.removeChild(debugContainer.lastChild);
