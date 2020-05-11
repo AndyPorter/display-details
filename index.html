@@ -434,13 +434,13 @@ function getDebugInfo() {
 	getZoomValues();
 	infoSections.push({ name: '---------------------------------------', value: '-----' });
 	infoSections.push({ name: 'Zoom: Chrome only (Firefox = doubled; Safari always 1, IE = ?)', value: '' });
-	infoSections.push({ name: 'Zoom level', value: zoomLevel + ' (' + parseFloat(zoomLevel * 100).toFixed(0) + '%)' });
+	infoSections.push({ name: 'Browser Zoom level', value: zoomLevel + ' (' + parseFloat(zoomLevel * 100).toFixed(0) + '%)' });
 	infoSections.push({ name: 'Device zoom level', value: deviceZoom });
 
 	// mobile pinch zoom level
   if (window.visualViewport) {
 		infoSections.push({ name: '---------------------------------------', value: '-----' });
-		infoSections.push({ name: 'mobile zoom level (untested)', value: window.visualViewport.scale });
+		infoSections.push({ name: 'mobile zoom level (press refresh)', value: parseFloat(window.visualViewport.scale *100).toFixed(2) + '%' });
 	}
 	
 	
