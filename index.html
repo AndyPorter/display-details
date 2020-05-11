@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Detect user agent, browser, os, screen resolution and other debug info</title>
+<title>Detect user agent, browser, os, screen resolution, and zoom level</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {
@@ -12,7 +12,7 @@ body {
 }
 
 #debug-container {
-  max-width: 400px;
+  max-width: 600px;
   border: 3px solid orange;
   padding: 20px;
   margin-bottom: 10px;
@@ -43,7 +43,7 @@ body {
 </script>
 </head>
 <body translate="no">
-<h1>User agent: browser, os, screen resolution</h1>
+<h1>User agent: browser, os, screen resolution and zoom level</h1>
 <!-- <p><i>An easy method using UA-Parser (https://github.com/faisalman/ua-parser-js) and vanilla JavaScript variables to detect user info for debugging, such as browser version, os, screen resolution, device type etc.</i> from https://codepen.io/martinkrulltott/details/KmJmVm</p> -->
 <div id="debug-container"></div>
 <button class="refresh-button" onclick="getDebugInfo()">Refresh </button>
@@ -431,6 +431,8 @@ function getDebugInfo() {
   }
   
 	getZoomValues();
+	infoSections.push({ name: '-------------------------------------------------------------', value: '-----' });
+	infoSections.push({ name: 'Zoom: Chrome only (Firefox = doubled; Safari always 1, IE = ?)', value: '' });
 	infoSections.push({ name: 'Zoom level', value: zoomLevel + ' (' + parseFloat(zoomLevel * 100).toFixed(0) + '%)' });
 	infoSections.push({ name: 'Device zoom level', value: deviceZoom });
 
